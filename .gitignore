@@ -1,0 +1,58 @@
+# Node dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+dist/
+build/
+.next/
+out/
+.cache/
+.vite/
+*.tsbuildinfo
+
+# macOS, Linux and system files
+.DS_Store
+Thumbs.db
+
+# Env files and local settings
+.env
+.env.*
+!.env.example
+.next/
+coverage/
+*.local
+*.env.local
+*.env.development.local
+*.env.test.local
+*.env.production.local
+
+# Production output
+/vercel
+
+# VSCode and editor folders
+.vscode/
+.idea/
+*.swp
+
+# Pitch walkthrough — too large for GitHub; use NEXT_PUBLIC_PITCH_WALKTHROUGH_VIDEO_URL or keep locally
+frontend/public/slides/DrawFi-Walkthrough.mp4
+
+# Misc
+*.log
+debug.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Typescript build info
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# Test coverage
+coverage
+
+backend/.pnpm-store/
