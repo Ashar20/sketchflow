@@ -37,7 +37,7 @@ coverage/
 *.swp
 
 # Pitch walkthrough — too large for GitHub; use NEXT_PUBLIC_PITCH_WALKTHROUGH_VIDEO_URL or keep locally
-frontend/public/slides/DrawFi-Walkthrough.mp4
+frontend/public/slides/SketchFlow-Walkthrough.mp4
 
 # Misc
 *.log
