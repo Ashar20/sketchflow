@@ -1,0 +1,21 @@
+{
+  "contracts": {
+    "PriceOracle": "cadence/contracts/PriceOracle.cdc",
+    "LineFutures": "cadence/contracts/LineFutures.cdc"
+  },
+  "networks": {
+    "testnet": "access.devnet.nodes.onflow.org:9000",
+    "mainnet": "access.mainnet.nodes.onflow.org:9000"
+  },
+  "accounts": {
+    "drawfi-testnet": {
+      "address": "REPLACE_WITH_FLOW_ADDRESS",
+      "key": "REPLACE_WITH_KEY_NAME"
+    }
+  },
+  "deployments": {
+    "testnet": {
+      "drawfi-testnet": ["PriceOracle", "LineFutures"]
+    }
+  }
+}
