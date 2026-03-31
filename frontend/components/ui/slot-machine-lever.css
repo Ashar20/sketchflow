@@ -1,0 +1,210 @@
+/* Slot Machine Lever Button - Nyan Theme */
+
+/* Pixel-art styled slot machine lever */
+.slot-machine-button {
+  --primary: #0a0a0a;
+  --border: #00E5FF;
+  --accent: #000000;
+  --text: #00E5FF;
+  position: relative;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  width: 100%;
+}
+
+.slot-machine-button.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Main body of the button - pixel look */
+.slot-body {
+  position: relative;
+  flex: 1;
+  padding: 8px 10px;
+  padding-right: 42px;
+  border: 3px solid var(--border);
+  border-radius: 10px;
+  background: var(--primary);
+  box-shadow:
+    4px 4px 0 var(--accent),
+    inset 0 -2px 0 rgba(0,0,0,0.35);
+}
+
+/* Inner window with text - pixel display */
+.slot-window {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  width: 100%;
+  height: 40px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  background: var(--accent);
+  overflow: hidden;
+}
+
+.slot-text {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  font-family: var(--font-geist-mono), 'Courier New', monospace;
+}
+
+/* Lever mechanism */
+.slot-lever {
+  position: absolute;
+  top: 50%;
+  right: -8px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Horizontal stick connecting to body */
+.lever-stick-base {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 10px;
+  border: 3px solid var(--border);
+  border-left: none;
+  border-radius: 0 4px 4px 0;
+  background: var(--accent);
+  z-index: 1;
+}
+
+/* Vertical stick */
+.lever-stick {
+  position: absolute;
+  top: -32px;
+  right: 6px;
+  width: 12px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-radius: 6px;
+  background: var(--accent);
+  transition: all 350ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  z-index: 2;
+}
+
+/* Lever ball color: use --lever-color when set (e.g. from leverColor prop), else default */
+.lever-ball {
+  position: absolute;
+  top: -60px;
+  right: -2px;
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--primary);
+  border-radius: 6px;
+  background: var(--lever-color, #00E5FF);
+  cursor: pointer;
+  transition: all 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  z-index: 3;
+  box-shadow: 0 2px 0 #000, 0 0 20px color-mix(in srgb, var(--lever-color, #00E5FF) 80%, transparent);
+  animation: leverGlow 2s ease-in-out infinite;
+}
+
+@keyframes leverGlow {
+  0%, 100% {
+    box-shadow: 0 2px 0 #000, 0 0 20px color-mix(in srgb, var(--lever-color, #00E5FF) 80%, transparent);
+  }
+  50% {
+    box-shadow: 0 2px 0 #000, 0 0 30px var(--lever-color, #00E5FF), 0 0 40px color-mix(in srgb, var(--lever-color, #00E5FF) 60%, transparent);
+  }
+}
+
+.lever-ball:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 0 #000, 0 0 25px var(--lever-color, #00E5FF);
+}
+
+.lever-ball:active {
+  transform: scale(0.95);
+}
+
+/* Pulled state */
+.slot-lever.pulled .lever-ball {
+  top: -18px;
+}
+
+.slot-lever.pulled .lever-stick {
+  top: -12px;
+  height: 22px;
+}
+
+/* Disabled state */
+.slot-machine-button.disabled .lever-ball {
+  cursor: not-allowed;
+  opacity: 0.5;
+  animation: none;
+  box-shadow: 0 2px 0 #000;
+}
+
+.slot-machine-button.disabled .slot-body {
+  opacity: 0.5;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .slot-body {
+    padding: 5px 6px;
+    padding-right: 34px;
+    border-width: 2px;
+    border-radius: 8px;
+  }
+ 
+  .slot-window {
+    height: 32px;
+    border-width: 2px;
+    border-radius: 6px;
+  }
+ 
+  .slot-text {
+    font-size: 10px;
+  }
+ 
+  .slot-lever {
+    right: -6px;
+  }
+ 
+  .lever-stick-base {
+    width: 16px;
+    height: 8px;
+    border-width: 2px;
+    right: 4px;
+  }
+ 
+  .lever-stick {
+    width: 10px;
+    height: 32px;
+    top: -24px;
+    right: 4px;
+    border-width: 2px;
+  }
+ 
+  .lever-ball {
+    width: 26px;
+    height: 26px;
+    top: -46px;
+    right: -1px;
+    border-width: 2px;
+  }
+ 
+  .slot-lever.pulled .lever-ball {
+    top: -14px;
+  }
+ 
+  .slot-lever.pulled .lever-stick {
+    top: -10px;
+    height: 16px;
+  }
+}

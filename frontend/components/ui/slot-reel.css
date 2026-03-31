@@ -1,0 +1,111 @@
+/* Slot Machine - 3D Spinning Reels - Nyan Theme */
+
+.slot-machine-text {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: #0a0a0a;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid #00E5FF;
+  box-shadow:
+    inset 0 2px 0 rgba(0,0,0,0.35);
+}
+
+/* Cell containing reel + optional fence */
+.slot-reel-cell {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+}
+
+/* Individual reel wrapper */
+.slot-reel-wrapper {
+  flex: 1;
+  height: 100%;
+  perspective: 1000px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* 3D spinning container */
+.slot-reel-container {
+  position: relative;
+  width: 100%;
+  height: 36px;
+  transform-style: preserve-3d;
+}
+
+/* Each character face */
+.slot-char {
+  position: absolute;
+  width: 100%;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-geist-mono), 'Courier New', monospace;
+  font-size: 22px;
+  font-weight: 900;
+  color: #000;
+  background: #00E5FF;
+  border-top: 1px solid rgba(0,0,0,0.25);
+  border-bottom: 1px solid rgba(0,0,0,0.25);
+  backface-visibility: hidden;
+  image-rendering: pixelated;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+}
+
+/* Fence divider */
+.slot-fence {
+  width: 4px;
+  height: 100%;
+  background: #000;
+  border-left: 1px solid #0a0a0a;
+  border-right: 1px solid #0a0a0a;
+  flex-shrink: 0;
+}
+
+/* Compact version for button */
+.slot-machine-button .slot-machine-text {
+  border-radius: 5px;
+}
+
+.slot-machine-button .slot-reel-container {
+  height: 32px;
+}
+
+.slot-machine-button .slot-char {
+  height: 32px;
+  font-size: 18px;
+}
+
+.slot-machine-button .slot-fence {
+  width: 3px;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .slot-machine-button .slot-machine-text {
+    border-radius: 6px;
+  }
+
+  .slot-machine-button .slot-reel-container {
+    height: 28px;
+  }
+
+  .slot-machine-button .slot-char {
+    height: 28px;
+    font-size: 16px;
+  }
+
+  .slot-machine-button .slot-fence {
+    width: 3px;
+  }
+}

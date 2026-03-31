@@ -1,8 +1,8 @@
-# DrawFi — Demo Judge Q&A Prep
+# Sketch Flow — Demo Judge Q&A Prep
 
 ## 30-Second Elevator Pitch
 
-DrawFi lets you trade futures by drawing. Instead of placing complex orders, you sketch where you think the price will go over the next minute. Your prediction is sampled into 60 price points and committed to storage before the position opens. When the minute's up, we compare your drawing against reality — direction by direction, second by second. Get over 50% of the directions right and you profit, amplified by leverage up to 2500x. You open positions from your wallet on Base (native gas). It's Pictionary meets futures trading.
+Sketch Flow lets you trade futures by drawing. Instead of placing complex orders, you sketch where you think the price will go over the next minute. Your prediction is sampled into 60 price points and committed to storage before the position opens. When the minute's up, we compare your drawing against reality — direction by direction, second by second. Get over 50% of the directions right and you profit, amplified by leverage up to 2500x. You open positions from your wallet on Base (native gas). It's Pictionary meets futures trading.
 
 ---
 
@@ -35,7 +35,7 @@ DrawFi lets you trade futures by drawing. Instead of placing complex orders, you
 
 **Q: Why directional accuracy instead of traditional P&L?**
 
-> Traditional futures reward a single directional bet. DrawFi rewards *curve-reading skill* — you need to predict the shape of price movement, not just "up or down." This creates a genuine skill game where chart readers have an edge, while random guessers break even. It also prevents trivial strategies: you can't just draw a flat line or a steep slope and win consistently.
+> Traditional futures reward a single directional bet. Sketch Flow rewards *curve-reading skill* — you need to predict the shape of price movement, not just "up or down." This creates a genuine skill game where chart readers have an edge, while random guessers break even. It also prevents trivial strategies: you can't just draw a flat line or a steep slope and win consistently.
 
 **Q: Why do users pay gas on open?**
 
@@ -145,9 +145,9 @@ DrawFi lets you trade futures by drawing. Instead of placing complex orders, you
 
 ## Category 7: Product & Market
 
-**Q: What problem does DrawFi solve?**
+**Q: What problem does Sketch Flow solve?**
 
-> 95% of retail traders lose money on derivatives — not because they can't read charts, but because the tools are built for quant desks. DrawFi makes futures trading intuitive: draw what you think, stake what you want, get paid in 60 seconds. No order books, no liquidations, no complexity.
+> 95% of retail traders lose money on derivatives — not because they can't read charts, but because the tools are built for quant desks. Sketch Flow makes futures trading intuitive: draw what you think, stake what you want, get paid in 60 seconds. No order books, no liquidations, no complexity.
 
 **Q: Who is your target user?**
 
@@ -155,11 +155,11 @@ DrawFi lets you trade futures by drawing. Instead of placing complex orders, you
 
 **Q: How do you compare to Polymarket?**
 
-> Polymarket = binary outcomes (yes/no on events). DrawFi = continuous curve prediction with second-by-second granularity. It's a skill-based micro-game, not a prediction market. The 60-second time horizon and drawing UX make it feel like a game; the underlying mechanics give it DeFi depth.
+> Polymarket = binary outcomes (yes/no on events). Sketch Flow = continuous curve prediction with second-by-second granularity. It's a skill-based micro-game, not a prediction market. The 60-second time horizon and drawing UX make it feel like a game; the underlying mechanics give it DeFi depth.
 
 **Q: How do you compare to GMX/dYdX/Hyperliquid?**
 
-> Those are full-featured perp DEXs for sophisticated traders. DrawFi is the on-ramp — simplified UX, fixed 60-second duration, no liquidation management. We're not competing with them; we're capturing the 100M+ crypto users who understand price direction but won't touch a perp DEX.
+> Those are full-featured perp DEXs for sophisticated traders. Sketch Flow is the on-ramp — simplified UX, fixed 60-second duration, no liquidation management. We're not competing with them; we're capturing the 100M+ crypto users who understand price direction but won't touch a perp DEX.
 
 **Q: Why 60-second positions?**
 

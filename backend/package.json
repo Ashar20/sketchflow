@@ -1,0 +1,51 @@
+{
+  "name": "price-oracle-backend",
+  "version": "1.0.0",
+  "description": "Backend server for Price Oracle with MongoDB storage",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "node scripts/dbseedscript.js && tsx watch src/index.ts",
+    "dev:memory": "node scripts/dev-with-memory-mongo.mjs",
+    "build": "tsc",
+    "start": "node scripts/dbseedscript.js && node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "oracle",
+    "mongodb",
+    "price-feed"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@noble/curves": "^2.0.1",
+    "@noble/hashes": "^2.0.1",
+    "@onflow/fcl": "^1.21.10",
+    "@onflow/sdk": "^1.13.7",
+    "@onflow/types": "^1.5.0",
+    "@onflow/util-address": "^1.2.4",
+    "better-sqlite3": "^11.7.0",
+    "dotenv": "^16.4.7",
+    "elliptic": "^6.6.1",
+    "ethers": "^6.14.0",
+    "express": "^4.21.2",
+    "mongodb": "^6.0.0",
+    "node-cron": "^3.0.3",
+    "sha3": "^2.1.4",
+    "viem": "^2.45.1",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/elliptic": "^6.4.18",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.5",
+    "@types/node-cron": "^3.0.11",
+    "@types/ws": "^8.5.13",
+    "mongodb-memory-server": "^11.0.1",
+    "node-gyp": "^12.2.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.8.0"
+  }
+}

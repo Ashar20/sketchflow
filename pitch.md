@@ -1,4 +1,4 @@
-# DrawFi — 2.5 Min Build in Public Pitch
+# Sketch Flow — 2.5 Min Build in Public Pitch
 
 ---
 
@@ -24,7 +24,7 @@ Current perp DEXs (dYdX, GMX, Hyperliquid) are powerful but intimidating. Predic
 
 ## 3. The Product (30 sec)
 
-> We built DrawFi for crypto-native users who understand charts but don't trade — so they can predict price movement by drawing a curve and earn real payouts in 60 seconds, instead of learning perpetual futures.
+> We built Sketch Flow for crypto-native users who understand charts but don't trade — so they can predict price movement by drawing a curve and earn real payouts in 60 seconds, instead of learning perpetual futures.
 
 **How it works:**
 1. You draw a price curve on a canvas
