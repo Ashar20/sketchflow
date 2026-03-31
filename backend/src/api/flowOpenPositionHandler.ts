@@ -2,7 +2,6 @@ import type { Request, Response } from 'express';
 import * as fcl from '@onflow/fcl';
 import config from '../config/config.js';
 import { submitFlowTransaction } from '../flow/flowTx.js';
-import { configureFlowAccessNode } from '../flow/flowTx.js';
 import logger from '../utils/logger.js';
 
 function getFlowCoreAddresses(): { fungibleToken: string; flowToken: string } {
@@ -71,8 +70,6 @@ export async function handleFlowOpenPosition(req: Request, res: Response): Promi
       return;
     }
     const amtStr = amtNum.toFixed(8);
-
-    configureFlowAccessNode(config.flowAccessNode);
 
     const { fungibleToken, flowToken } = getFlowCoreAddresses();
     const futuresAddr = with0x(config.flowLineFuturesAddress);
@@ -151,8 +148,8 @@ transaction(userAddress: Address, leverage: UInt16, predictionCommitmentIds: [St
     const txId = await submitFlowTransaction({
       cadence,
       args,
-      proposerAddress: signerOpts.address,
       signerOpts,
+      accessNode: config.flowAccessNode,
       limit: 9999,
     });
 

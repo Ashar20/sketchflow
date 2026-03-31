@@ -174,6 +174,7 @@ transaction(positionId: UInt64, pnl: Fix64, actualPriceCommitmentId: String) {
       ],
       proposerAddress: this.signerOpts.address,
       signerOpts: this.signerOpts,
+      accessNode: config.flowAccessNode,
       limit: 9999,
     });
   }
