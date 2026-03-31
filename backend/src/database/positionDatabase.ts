@@ -86,12 +86,23 @@ export class PositionDatabase {
 
       this.db.exec(createTable);
 
+      // Table to record the open-transaction hash for each position ID
+      this.db.exec(`
+        CREATE TABLE IF NOT EXISTS open_tx_log (
+          position_id   INTEGER PRIMARY KEY,
+          user_address  TEXT NOT NULL,
+          open_tx_hash  TEXT NOT NULL,
+          created_at    INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
+        )
+      `);
+
       // Create indexes for better query performance
       const createIndexes = `
         CREATE INDEX IF NOT EXISTS idx_user_address ON closed_positions(user_address);
         CREATE INDEX IF NOT EXISTS idx_pnl ON closed_positions(pnl DESC);
         CREATE INDEX IF NOT EXISTS idx_close_timestamp ON closed_positions(close_timestamp DESC);
         CREATE INDEX IF NOT EXISTS idx_position_id ON closed_positions(position_id);
+        CREATE INDEX IF NOT EXISTS idx_open_tx_user ON open_tx_log(user_address);
       `;
 
       this.db.exec(createIndexes);
@@ -409,6 +420,35 @@ export class PositionDatabase {
     } catch (error) {
       logger.error('Failed to get average win rate', error);
       return 0;
+    }
+  }
+
+  /**
+   * Record the open-transaction hash for one or more position IDs.
+   * Called right after a successful openPosition tx is sealed on the frontend.
+   */
+  public saveOpenTx(positionId: number, userAddress: string, openTxHash: string): void {
+    try {
+      this.db.prepare(`
+        INSERT OR REPLACE INTO open_tx_log (position_id, user_address, open_tx_hash)
+        VALUES (?, ?, ?)
+      `).run(positionId, userAddress.toLowerCase(), openTxHash);
+    } catch (error) {
+      logger.error('Failed to save open tx log', { positionId, error });
+    }
+  }
+
+  /**
+   * Retrieve the open-transaction hash for a position ID (returns null if unknown).
+   */
+  public getOpenTxHash(positionId: number): string | null {
+    try {
+      const row = this.db.prepare(
+        'SELECT open_tx_hash FROM open_tx_log WHERE position_id = ?'
+      ).get(positionId) as { open_tx_hash: string } | undefined;
+      return row?.open_tx_hash ?? null;
+    } catch {
+      return null;
     }
   }
 

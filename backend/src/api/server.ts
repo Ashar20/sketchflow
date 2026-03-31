@@ -143,6 +143,7 @@ export class APIServer {
       this.app.get('/api/leaderboard/user/:address', this.handleUserStats.bind(this));
       this.app.get('/api/positions/closed', this.handleClosedPositions.bind(this));
       this.app.get('/api/leaderboard/stats', this.handleLeaderboardStats.bind(this));
+      this.app.post('/api/positions/record-open', this.handleRecordOpenTx.bind(this));
     }
 
     // Root endpoint
@@ -741,6 +742,7 @@ export class APIServer {
         const position = await this.positionService.getPosition(positionId);
         if (!position.isOpen && position.closeTimestamp) {
           const closeTs = Number(position.closeTimestamp.toString());
+          const openTxHash = this.positionDatabase?.getOpenTxHash(positionId) ?? '';
           closed.push({
             positionId,
             userAddress: normalizedUser,
@@ -749,8 +751,8 @@ export class APIServer {
             pnl: position.pnl.toString(),
             openTimestamp: Number(position.openTimestamp.toString()),
             closeTimestamp: closeTs,
-            accuracy: 0, // Not available from contract alone
-            txHash: ''
+            accuracy: 0,
+            txHash: openTxHash
           });
         }
       } catch (err) {
@@ -760,6 +762,51 @@ export class APIServer {
 
     return closed;
   }
+
+  /**
+   * Record the open-transaction hash for one or more position IDs.
+   * Called by the frontend after a successful seal so we can surface the
+   * open txHash in history even before the position closer runs.
+   * Body: { positionIds: number[], txHash: string, userAddress: string }
+   */
+  private handleRecordOpenTx = async (req: Request, res: Response): Promise<void> => {
+    try {
+      if (!this.positionDatabase) {
+        res.status(503).json({ error: 'Database not available' });
+        return;
+      }
+
+      const { positionIds, txHash, userAddress } = req.body as {
+        positionIds?: unknown;
+        txHash?: unknown;
+        userAddress?: unknown;
+      };
+
+      if (!Array.isArray(positionIds) || positionIds.length === 0) {
+        res.status(400).json({ error: 'positionIds must be a non-empty array' });
+        return;
+      }
+      if (typeof txHash !== 'string' || !txHash) {
+        res.status(400).json({ error: 'txHash is required' });
+        return;
+      }
+      if (typeof userAddress !== 'string' || !/^0x[a-fA-F0-9]{1,40}$/.test(userAddress)) {
+        res.status(400).json({ error: 'Invalid userAddress' });
+        return;
+      }
+
+      const ids = (positionIds as unknown[]).map(Number).filter((n) => Number.isFinite(n) && n >= 0);
+      for (const id of ids) {
+        this.positionDatabase.saveOpenTx(id, userAddress, txHash);
+      }
+
+      logger.info('Open tx hashes recorded', { positionIds: ids, txHash, userAddress });
+      res.json({ success: true, recorded: ids.length });
+    } catch (error) {
+      logger.error('Failed to record open tx', error);
+      res.status(500).json({ error: 'Failed to record open tx' });
+    }
+  };
 
   /**
    * Handle leaderboard stats request

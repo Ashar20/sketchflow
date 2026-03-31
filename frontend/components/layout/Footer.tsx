@@ -59,7 +59,7 @@ export function Footer() {
 
           {/* Built with love */}
           <div className="text-[#00E5FF]/60 text-xs">
-            Built with 🐱 on Ethereum
+            Built with 🐱 on Flow
           </div>
         </div>
       </div>

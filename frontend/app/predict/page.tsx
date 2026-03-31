@@ -318,6 +318,14 @@ export default function PredictPage(_props: { params?: unknown; searchParams?: u
       setPositionIds(openedIds);
       setPositionStatus('trading');
       setTimeRemaining(60);
+
+      // Persist open txHash so history page can show it before the close tx is available
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+      fetch(`${backendUrl}/api/positions/record-open`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ positionIds: openedIds, txHash: txId, userAddress: address }),
+      }).catch((err) => console.warn('Failed to record open tx hash:', err));
       setBatchPnL(null);
 
       const predictionPoints = sampledPoints.map((point) => {
