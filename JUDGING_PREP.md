@@ -1,4 +1,4 @@
-# Draw-Fi (SketchFlow): Judging Prep — **Flow / Consumer DeFi**
+# Sketch Flow — Judging Prep (**Flow / Consumer DeFi**)
 
 ## Table of Contents
 
@@ -40,7 +40,7 @@ How this build maps to that:
 
 ## Project Overview
 
-**Draw-Fi** is a gamified prediction experience: users sketch a price path on a chart; the curve becomes **60 sampled points**, committed to **EigenDA**, referenced on-chain in **LineFutures** (Cadence on **Flow testnet**). After **60 seconds** (per position), the backend loads prediction + realized prices, computes **directional-accuracy PnL**, and **closes** the position on Flow via the **PnlOperator** resource.
+**Sketch Flow** is a gamified prediction experience: users sketch a price path on a chart; the curve becomes **60 sampled points**, committed to **EigenDA**, referenced on-chain in **LineFutures** (Cadence on **Flow testnet**). After **60 seconds** (per position), the backend loads prediction + realized prices, computes **directional-accuracy PnL**, and **closes** the position on Flow via the **PnlOperator** resource.
 
 **Key integrations**
 
@@ -54,7 +54,7 @@ How this build maps to that:
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
-│                    DRAW-FI ON FLOW (CONSUMER-DEFI ORIENTED)                 │
+│                  SKETCH FLOW ON FLOW (CONSUMER-DEFI ORIENTED)               │
 ├────────────────────────────────────────────────────────────────────────────┤
 │  FRONTEND (Next.js — UI not redesigned for this migration)                 │
 │  ├─ Predict: draw curve → sample 60 → upload → open via Flow wallet (FCL)   │

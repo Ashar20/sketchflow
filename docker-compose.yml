@@ -1,0 +1,15 @@
+# Local MongoDB for Sketch Flow backend (replaces in-memory Mongo when you prefer Docker).
+# Usage: docker compose up -d
+# Then set MONGODB_URI=mongodb://127.0.0.1:27017/ in backend/.env (default in .env.example).
+services:
+  mongo:
+    image: mongo:7
+    container_name: sketchflow-mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - sketchflow-mongo-data:/data/db
+    restart: unless-stopped
+
+volumes:
+  sketchflow-mongo-data:
