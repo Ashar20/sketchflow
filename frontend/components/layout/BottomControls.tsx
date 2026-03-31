@@ -19,6 +19,8 @@ interface BottomControlsProps {
   positionStatus?: PositionStatus;
   statusMessageIndex?: number;
   timeRemaining?: number | null;
+  /** Backend + client configured for sponsored payer (user does not pay network fees) */
+  feeSponsorshipActive?: boolean;
 }
 
 const TRADING_MESSAGES = ['Trading...', 'Future booming...', 'Position active...'] as const;
@@ -35,6 +37,7 @@ export function BottomControls({
   positionStatus = 'idle',
   statusMessageIndex = 0,
   timeRemaining = null,
+  feeSponsorshipActive = false,
 }: BottomControlsProps) {
   const showStatus = isOpeningPosition || positionStatus !== 'idle';
   return (
@@ -53,7 +56,7 @@ export function BottomControls({
               <div className="flex items-center gap-1 sm:gap-2 shrink-0">
                 {/* Wallet pill - pixel look */}
                 <motion.div
-                  className="min-w-0 shrink-0"
+                  className="min-w-0 shrink-0 flex items-center gap-1 sm:gap-2"
                   whileHover={{ scale: 1.02 }}
                 >
                   <div className="flex items-center gap-1 sm:gap-2 px-1.5 sm:px-3 py-1 sm:py-2 rounded-lg border-2 sm:border-3 border-[#00E5FF] bg-[#000000]/50 shadow-[2px_2px_0_0_#00E5FF] sm:shadow-[3px_3px_0_0_#00E5FF]">
@@ -62,6 +65,15 @@ export function BottomControls({
                       {isConnected ? (walletBalanceLoading ? '...' : walletBalanceFlow) : '0.0000'} FLOW
                     </span>
                   </div>
+                  {feeSponsorshipActive && (
+                    <span
+                      className="font-mono text-[9px] sm:text-xs text-emerald-400/90 border border-emerald-500/40 rounded px-1 py-0.5 sm:px-1.5 whitespace-nowrap shrink-0 leading-tight"
+                      title="Sponsor pays network fees (gasless). You still sign once per open to authorize stake from your vault."
+                    >
+                      <span className="sm:hidden">no fee</span>
+                      <span className="hidden sm:inline">fees sponsored</span>
+                    </span>
+                  )}
                 </motion.div>
 
                 {/* Profit pill - pixel look */}

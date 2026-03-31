@@ -546,6 +546,7 @@ export default function PredictPage(_props: { params?: unknown; searchParams?: u
         positionStatus={positionStatus}
         statusMessageIndex={statusMessageIndex}
         timeRemaining={timeRemaining}
+        feeSponsorshipActive={!!sponsorPayerFactory}
       />
     </div>
   );
