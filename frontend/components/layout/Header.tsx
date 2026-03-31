@@ -36,7 +36,7 @@ export function Header({ showStatus, statusText }: HeaderProps) {
             >
               <div className="absolute inset-0 rounded-lg bg-[#00E5FF]/40 blur-lg opacity-60 group-hover:opacity-100 transition-opacity" />
               <h1 className="text-4xl font-venite px-2 bg-black sm:px-4 md:px-6 py-2 sm:py-2 md:py-2 font-bold text-[#00E5FF]">
-                DW
+                SF
               </h1>
             </motion.div>
             <div className="flex flex-col">

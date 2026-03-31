@@ -2,22 +2,17 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
 import Link from 'next/link';
 import { NoiseEffect } from '@/components/ui/NoiseEffect';
 
 const SLIDES = [
   'title',
   'problem',
-  'why-now-img',
   'why-now',
   'product',
-  'product-img',
-  'tech-arch-img',
   'onchain-stack',
   'demo',
   'walkthrough-vid',
-  'features-img',
   'traction',
   'team',
 ] as const;
@@ -26,14 +21,10 @@ const SLIDE_LABELS = [
   'Title',
   'The Pain',
   'Why Now',
-  'Why Now',
   'Product',
-  'Product',
-  'Architecture',
   'On-chain stack',
   'Demo',
   'Walkthrough',
-  'Features',
   'Traction',
   'Team',
 ];
@@ -304,23 +295,9 @@ export default function PitchPage() {
           </motion.div>
         </div>
 
-        {/* ===== SLIDE 3: WHY NOW IMAGE ===== */}
+        {/* ===== SLIDE 3: WHY NOW ===== */}
         <div
           ref={(el) => { slideRefs.current[2] = el; }}
-          className="snap-start h-screen flex items-center justify-center relative bg-black"
-        >
-          <Image
-            src="/slides/why-now.png"
-            alt="Why Now"
-            fill
-            className="object-contain"
-            priority
-          />
-        </div>
-
-        {/* ===== SLIDE 4: WHY NOW ===== */}
-        <div
-          ref={(el) => { slideRefs.current[3] = el; }}
           className="snap-start h-screen flex items-center justify-center relative"
         >
           <motion.div
@@ -405,9 +382,9 @@ export default function PitchPage() {
           </motion.div>
         </div>
 
-        {/* ===== SLIDE 5: THE PRODUCT ===== */}
+        {/* ===== SLIDE 4: THE PRODUCT ===== */}
         <div
-          ref={(el) => { slideRefs.current[4] = el; }}
+          ref={(el) => { slideRefs.current[3] = el; }}
           className="snap-start h-screen flex items-center justify-center relative"
         >
           <div
@@ -489,37 +466,9 @@ export default function PitchPage() {
           </motion.div>
         </div>
 
-        {/* ===== SLIDE 6: PRODUCT IMAGE ===== */}
+        {/* ===== SLIDE 5: ON-CHAIN STACK ===== */}
         <div
-          ref={(el) => { slideRefs.current[5] = el; }}
-          className="snap-start h-screen flex items-center justify-center relative bg-black"
-        >
-          <Image
-            src="/slides/product.png"
-            alt="Product"
-            fill
-            className="object-contain"
-            priority
-          />
-        </div>
-
-        {/* ===== SLIDE 7: TECHNICAL ARCHITECTURE IMAGE ===== */}
-        <div
-          ref={(el) => { slideRefs.current[6] = el; }}
-          className="snap-start h-screen flex items-center justify-center relative bg-black"
-        >
-          <Image
-            src="/slides/technical-architecture.png"
-            alt="Technical Architecture"
-            fill
-            className="object-contain"
-            priority
-          />
-        </div>
-
-        {/* ===== SLIDE 8: ON-CHAIN STACK ===== */}
-        <div
-          ref={(el) => { slideRefs.current[7] = el; }}
+          ref={(el) => { slideRefs.current[4] = el; }}
           className="snap-start h-screen flex items-center justify-center relative"
         >
           <motion.div
@@ -617,9 +566,9 @@ export default function PitchPage() {
           </motion.div>
         </div>
 
-        {/* ===== SLIDE 9: DEMO FLOW ===== */}
+        {/* ===== SLIDE 6: DEMO FLOW ===== */}
         <div
-          ref={(el) => { slideRefs.current[8] = el; }}
+          ref={(el) => { slideRefs.current[5] = el; }}
           className="snap-start h-screen flex items-center justify-center relative"
         >
           <motion.div
@@ -677,9 +626,9 @@ export default function PitchPage() {
           </motion.div>
         </div>
 
-        {/* ===== SLIDE 10: WALKTHROUGH VIDEO ===== */}
+        {/* ===== SLIDE 7: WALKTHROUGH VIDEO ===== */}
         <div
-          ref={(el) => { slideRefs.current[9] = el; }}
+          ref={(el) => { slideRefs.current[6] = el; }}
           className="snap-start h-screen flex items-center justify-center relative bg-black"
         >
           <video
@@ -694,23 +643,9 @@ export default function PitchPage() {
           />
         </div>
 
-        {/* ===== SLIDE 11: FEATURES IMAGE ===== */}
+        {/* ===== SLIDE 8: TRACTION + ROADMAP ===== */}
         <div
-          ref={(el) => { slideRefs.current[10] = el; }}
-          className="snap-start h-screen flex items-center justify-center relative bg-black"
-        >
-          <Image
-            src="/slides/features.png"
-            alt="Features"
-            fill
-            className="object-contain"
-            priority
-          />
-        </div>
-
-        {/* ===== SLIDE 12: TRACTION + ROADMAP ===== */}
-        <div
-          ref={(el) => { slideRefs.current[11] = el; }}
+          ref={(el) => { slideRefs.current[7] = el; }}
           className="snap-start h-screen flex items-center justify-center relative"
         >
           <motion.div
@@ -791,9 +726,9 @@ export default function PitchPage() {
           </motion.div>
         </div>
 
-        {/* ===== SLIDE 13: TEAM ===== */}
+        {/* ===== SLIDE 9: TEAM ===== */}
         <div
-          ref={(el) => { slideRefs.current[12] = el; }}
+          ref={(el) => { slideRefs.current[8] = el; }}
           className="snap-start h-screen flex items-center justify-center relative"
         >
           <div

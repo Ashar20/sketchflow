@@ -34,3 +34,19 @@ export function cadenceImportAddress(addr: string): string {
   const h = addr.replace(/^0x/i, '');
   return `0x${h}`;
 }
+
+/** Flowscan block-explorer base URL for the given network. */
+export function flowscanBase(network: FlowNetworkId): string {
+  if (network === 'mainnet') return 'https://flowscan.io';
+  return 'https://testnet.flowscan.io';
+}
+
+/** Deep-link to a Flow transaction on Flowscan. */
+export function flowscanTxUrl(txId: string, network: FlowNetworkId = resolveFlowNetwork()): string {
+  return `${flowscanBase(network)}/tx/${txId}`;
+}
+
+/** Deep-link to a Flow account on Flowscan. */
+export function flowscanAccountUrl(address: string, network: FlowNetworkId = resolveFlowNetwork()): string {
+  return `${flowscanBase(network)}/account/${address}`;
+}

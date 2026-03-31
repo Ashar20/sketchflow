@@ -18,6 +18,7 @@ import { getOpenPositionsForUser } from '@/lib/api/positions';
 import type { LeaderboardEntry, UserStats } from '@/types/leaderboard';
 import type { PositionDetail } from '@/lib/api/positions';
 import { useFlowWallet } from '@/hooks/useFlowWallet';
+import { flowscanTxUrl, flowscanAccountUrl } from '@/lib/flow/addresses';
 
 type SortBy = 'pnl' | 'timestamp';
 
@@ -285,6 +286,19 @@ export default function HistoryPage() {
               <p className="text-sm text-white/50 mt-2">
                 Last updated: {lastUpdated.toLocaleTimeString()}
               </p>
+            )}
+            {isConnected && address && (
+              <a
+                href={flowscanAccountUrl(address)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 mt-3 px-4 py-1.5 rounded-full bg-[#00E5FF]/10 border border-[#00E5FF]/30 text-xs font-mono text-[#00E5FF]/80 hover:bg-[#00E5FF]/20 hover:text-[#00E5FF] transition-all"
+              >
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                </svg>
+                View on Flowscan
+              </a>
             )}
           </motion.div>
 
@@ -557,9 +571,17 @@ export default function HistoryPage() {
                               <span>Accuracy: {((position.accuracy ?? 0) * 100).toFixed(1)}%</span>
                             </div>
                             {position.txHash && (
-                              <div className="text-xs text-white/50 font-mono break-all">
+                              <a
+                                href={flowscanTxUrl(position.txHash)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1.5 text-xs text-[#00E5FF]/70 font-mono hover:text-[#00E5FF] transition-colors"
+                              >
+                                <svg className="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                                </svg>
                                 {formatAddress(position.txHash)}
-                              </div>
+                              </a>
                             )}
                           </div>
 
@@ -588,11 +610,15 @@ export default function HistoryPage() {
                             <div className="col-span-2 flex items-center justify-center">
                               {position.txHash ? (
                                 <a
-                                  href={`https://basescan.org/tx/${position.txHash}`}
+                                  href={flowscanTxUrl(position.txHash)}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-[#00E5FF] hover:text-[#00E5FF]/70 text-sm font-mono underline"
+                                  className="flex items-center gap-1.5 text-[#00E5FF] hover:text-[#00E5FF]/70 text-sm font-mono transition-colors"
+                                  title="View on Flowscan"
                                 >
+                                  <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                                  </svg>
                                   {formatAddress(position.txHash)}
                                 </a>
                               ) : (
