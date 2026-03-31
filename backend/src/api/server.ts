@@ -13,6 +13,7 @@ import {
   handleFlowFeeSponsorshipStatus,
   handleFlowSponsorSign,
 } from './flowSponsorHandlers.js';
+import { handleFlowOpenPosition } from './flowOpenPositionHandler.js';
 
 export class APIServer {
   private app: express.Application;
@@ -90,6 +91,11 @@ export class APIServer {
     this.app.get('/api/flow/fee-sponsorship', handleFlowFeeSponsorshipStatus);
     this.app.post('/api/flow/sponsor-sign', (req, res) => {
       void handleFlowSponsorSign(req, res);
+    });
+
+    // Fully server-signed open position (no wallet popup required)
+    this.app.post('/api/flow/open-position', (req, res) => {
+      void handleFlowOpenPosition(req, res);
     });
 
     // Get latest price window
@@ -653,8 +659,8 @@ export class APIServer {
       }
 
       const address = Array.isArray(req.params.address) ? req.params.address[0] : req.params.address;
-      if (!address || !/^0x[a-fA-F0-9]{40}$/.test(address)) {
-        res.status(400).json({ error: 'Invalid Ethereum address' });
+      if (!address || !/^0x[a-fA-F0-9]{1,40}$/.test(address)) {
+        res.status(400).json({ error: 'Invalid address' });
         return;
       }
 

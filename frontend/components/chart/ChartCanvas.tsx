@@ -83,6 +83,8 @@ export const ChartCanvas = forwardRef<ChartCanvasRef, ChartCanvasProps>(
       return () => {
         window.removeEventListener('resize', handleResize);
         chart.remove();
+        chartRef.current = null;
+        seriesRef.current = null;
       };
     }, [isDark, barSpacing]);
     

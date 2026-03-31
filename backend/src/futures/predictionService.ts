@@ -243,8 +243,8 @@ export class PredictionService {
    * Validate Ethereum address
    */
   private isValidAddress(address: string): boolean {
-    // Basic Ethereum address validation
-    return /^0x[a-fA-F0-9]{40}$/.test(address);
+    // Accept Flow addresses (1–16 hex chars) and Ethereum addresses (40 hex chars)
+    return /^0x[a-fA-F0-9]{1,40}$/.test(address);
   }
 
   /**

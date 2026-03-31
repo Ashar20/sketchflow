@@ -43,8 +43,8 @@ export async function getLeaderboard(
 export async function getUserStats(
   address: string
 ): Promise<UserStats> {
-  if (!address || !/^0x[a-fA-F0-9]{40}$/.test(address)) {
-    throw new Error('Invalid Ethereum address');
+  if (!address || !/^0x[a-fA-F0-9]{1,40}$/.test(address)) {
+    throw new Error('Invalid address');
   }
 
   const url = `${DEFAULT_BACKEND_URL}/api/leaderboard/user/${address}`;

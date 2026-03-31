@@ -1,8 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import * as fcl from '@onflow/fcl';
-import * as t from '@onflow/types';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNextStep } from 'nextstepjs';
 import { TradingChart } from '@/components/chart/TradingChart';
@@ -21,15 +19,9 @@ import { useFlowWallet } from '@/hooks/useFlowWallet';
 import { predictTourId } from '@/lib/onboarding/predictTourSteps';
 import { getPosition } from '@/lib/api/positions';
 import { fetchFlowBalanceDisplay } from '@/lib/flow/flowBalance';
-import {
-  buildBatchOpenPositionsCadence,
-  buildOpenPositionCadence,
-  flowAmountToUFix64String,
-  sealAndExtractPositionIds,
-} from '@/lib/flow/lineFuturesTx';
+import { sealAndExtractPositionIds } from '@/lib/flow/lineFuturesTx';
 import { formatWeiLike18 } from '@/lib/formatWeiLike';
-import { fetchFeeSponsorshipStatus } from '@/lib/flow/feeSponsorship';
-import { createSponsorPayerAuthz } from '@/lib/flow/sponsorPayerAuthz';
+import { openPositionViaBackend } from '@/lib/flow/openPositionViaBackend';
 
 const MIN_FLOW_PER_LEG = 0.001;
 
@@ -81,30 +73,6 @@ export default function PredictPage(_props: { params?: unknown; searchParams?: u
   const [isOpeningPosition, setIsOpeningPosition] = useState(false);
   const [walletBalanceFlow, setWalletBalanceFlow] = useState('0.0000');
   const [walletBalanceLoading, setWalletBalanceLoading] = useState(false);
-  const [feeSponsorship, setFeeSponsorship] = useState<Awaited<
-    ReturnType<typeof fetchFeeSponsorshipStatus>
-  > | null>(null);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    void fetchFeeSponsorshipStatus().then(setFeeSponsorship);
-  }, []);
-
-  const sponsorPayerFactory = useMemo(() => {
-    if (process.env.NEXT_PUBLIC_FLOW_SPONSOR_DISABLED === 'true') {
-      return null;
-    }
-    if (!feeSponsorship?.enabled || !feeSponsorship.payerAddress) {
-      return null;
-    }
-    if (feeSponsorship.apiKeyRequired && !process.env.NEXT_PUBLIC_FLOW_SPONSOR_API_KEY) {
-      return null;
-    }
-    return createSponsorPayerAuthz({
-      payerAddress: feeSponsorship.payerAddress,
-      keyId: feeSponsorship.keyId ?? 0,
-    });
-  }, [feeSponsorship]);
 
   useEffect(() => {
     if (!isConnected || !address || typeof window === 'undefined') {
@@ -314,67 +282,20 @@ export default function PredictPage(_props: { params?: unknown; searchParams?: u
         return;
       }
 
-      let cadence: string;
-      let args: (arg: (value: string, type: unknown) => unknown, types: typeof t) => unknown[];
-
-      try {
-        if (filteredIds.length === 1) {
-          cadence = buildOpenPositionCadence();
-          const flowAmountStr = flowAmountToUFix64String(amt);
-          args = (arg, types) => [
-            arg(String(lev), types.UInt16),
-            arg(filteredIds[0], types.String),
-            arg(flowAmountStr, types.UFix64),
-          ];
-        } else {
-          cadence = buildBatchOpenPositionsCadence();
-          const totalFlow = amt * filteredIds.length;
-          const flowAmountStr = flowAmountToUFix64String(totalFlow);
-          args = (arg, types) => [
-            arg(String(lev), types.UInt16),
-            (arg as (val: unknown, type: unknown) => unknown)(
-              filteredIds,
-              types.Array(types.String),
-            ),
-            arg(flowAmountStr, types.UFix64),
-          ];
-        }
-      } catch (cfgErr) {
-        const msg = cfgErr instanceof Error ? cfgErr.message : String(cfgErr);
-        alert(msg);
-        return;
-      }
+      const totalAmt = filteredIds.length === 1 ? amt : amt * filteredIds.length;
 
       let txId: string;
       try {
-        if (sponsorPayerFactory) {
-          txId = await fcl.mutate({
-            cadence,
-            args,
-            proposer: fcl.authz,
-            payer: sponsorPayerFactory,
-            authorizations: [fcl.authz],
-            limit: 9999,
-          });
-        } else {
-          txId = await fcl.mutate({
-            cadence,
-            args,
-            limit: 9999,
-          });
-        }
+        txId = await openPositionViaBackend({
+          userAddress: address,
+          leverage: lev,
+          commitmentIds: filteredIds,
+          amount: totalAmt,
+        });
       } catch (err) {
         console.error('open position failed', err);
         const message = err instanceof Error ? err.message : 'Failed to open position';
-        const low =
-          message.toLowerCase().includes('insufficient') ||
-          message.toLowerCase().includes('below minimum') ||
-          message.toLowerCase().includes('min_amount');
-        alert(
-          low
-            ? `Check your FLOW balance and minimum stake (${MIN_FLOW_PER_LEG} FLOW per leg).`
-            : `Error: ${message}`,
-        );
+        alert(`Error: ${message}`);
         return;
       }
 
@@ -383,7 +304,7 @@ export default function PredictPage(_props: { params?: unknown; searchParams?: u
         openedIds = await sealAndExtractPositionIds(txId);
       } catch (sealErr) {
         console.error(sealErr);
-        alert('Transaction submitted but confirmation failed. Check the explorer for your wallet.');
+        alert('Transaction submitted but confirmation failed. Check the explorer for the operator wallet.');
         return;
       }
 
@@ -546,7 +467,7 @@ export default function PredictPage(_props: { params?: unknown; searchParams?: u
         positionStatus={positionStatus}
         statusMessageIndex={statusMessageIndex}
         timeRemaining={timeRemaining}
-        feeSponsorshipActive={!!sponsorPayerFactory}
+        feeSponsorshipActive={true}
       />
     </div>
   );

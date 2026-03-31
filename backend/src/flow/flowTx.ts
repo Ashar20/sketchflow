@@ -12,6 +12,15 @@ export function configureFlowAccessNode(url: string): void {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type FlowCadenceArgs = (arg: any, t: any) => any[];
 
+function buildAuthz(params: { proposerAddress: string; signerOpts: FlowSignerOptions }) {
+  const signFn = createFlowSigningFunction(params.signerOpts);
+  return authorization(
+    withPrefix(params.proposerAddress.replace(/^0x/i, '0x')),
+    signFn as Parameters<typeof authorization>[1],
+    params.signerOpts.keyId,
+  );
+}
+
 export async function sendFlowTransaction(params: {
   cadence: string;
   args: FlowCadenceArgs;
@@ -19,12 +28,7 @@ export async function sendFlowTransaction(params: {
   signerOpts: FlowSignerOptions;
   limit?: number;
 }): Promise<string> {
-  const signFn = createFlowSigningFunction(params.signerOpts);
-  const authz = authorization(
-    withPrefix(params.proposerAddress.replace(/^0x/i, '0x')),
-    signFn as Parameters<typeof authorization>[1],
-    params.signerOpts.keyId
-  );
+  const authz = buildAuthz(params);
 
   const txId = await fcl.mutate({
     cadence: params.cadence,
@@ -37,6 +41,26 @@ export async function sendFlowTransaction(params: {
 
   await fcl.onceSealed(txId);
   return txId;
+}
+
+/** Submit a transaction and return txId immediately without waiting for sealing. */
+export async function submitFlowTransaction(params: {
+  cadence: string;
+  args: FlowCadenceArgs;
+  proposerAddress: string;
+  signerOpts: FlowSignerOptions;
+  limit?: number;
+}): Promise<string> {
+  const authz = buildAuthz(params);
+
+  return fcl.mutate({
+    cadence: params.cadence,
+    args: params.args,
+    proposer: authz,
+    payer: authz,
+    authorizations: [authz],
+    limit: params.limit ?? 9999,
+  }) as Promise<string>;
 }
 
 export async function executeFlowScript<R>(params: {
