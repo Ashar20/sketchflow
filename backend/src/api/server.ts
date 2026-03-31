@@ -686,7 +686,7 @@ export class APIServer {
 
       let result: { positions: Array<{ positionId: number; userAddress: string; amount: string; leverage: number; pnl: string; openTimestamp: number; closeTimestamp: number; accuracy: number; txHash: string }>; total: number };
 
-      if (user && /^0x[a-fA-F0-9]{40}$/.test(user)) {
+      if (user && /^0x[a-fA-F0-9]{1,40}$/.test(user)) {
         // Get from DB
         const dbResult = this.positionDatabase
           ? this.positionDatabase.getPositionsByUser(user, 1000, 0) // Fetch more for merging
