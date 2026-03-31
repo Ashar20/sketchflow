@@ -158,9 +158,9 @@ access(all) fun main(positionId: UInt64): Bool {
 import LineFutures from ${this.futuresAddr}
 
 transaction(positionId: UInt64, pnl: Fix64, actualPriceCommitmentId: String) {
-    prepare(signer: AuthAccount) {
-        let op = signer.borrow<&LineFutures.PnlOperator>(from: /storage/drawfiPnlOperator)
-            ?? panic("missing PnlOperator at /storage/drawfiPnlOperator")
+    prepare(signer: auth(Storage) &Account) {
+        let op = signer.storage.borrow<&LineFutures.PnlOperator>(from: /storage/sketchflowPnlOperator)
+            ?? panic("missing PnlOperator at /storage/sketchflowPnlOperator")
         op.closePosition(positionId: positionId, pnl: pnl, actualPriceCommitmentId: actualPriceCommitmentId)
     }
 }

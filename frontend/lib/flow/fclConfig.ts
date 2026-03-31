@@ -14,21 +14,27 @@ export function initFcl(): void {
 
   const accessNode =
     process.env.NEXT_PUBLIC_FLOW_ACCESS_NODE ||
-    (network === 'mainnet'
-      ? 'https://rest-mainnet.onflow.org'
-      : 'https://rest-testnet.onflow.org');
+    (network === 'emulator'
+      ? 'http://127.0.0.1:8888'
+      : network === 'mainnet'
+        ? 'https://rest-mainnet.onflow.org'
+        : 'https://rest-testnet.onflow.org');
 
   const discoveryWallet =
     process.env.NEXT_PUBLIC_FLOW_DISCOVERY_WALLET ||
-    (network === 'mainnet'
-      ? 'https://fcl-discovery.onflow.org/mainnet/authn'
-      : 'https://fcl-discovery.onflow.org/testnet/authn');
+    (network === 'emulator'
+      ? 'https://fcl-discovery.onflow.org/testnet/authn'
+      : network === 'mainnet'
+        ? 'https://fcl-discovery.onflow.org/mainnet/authn'
+        : 'https://fcl-discovery.onflow.org/testnet/authn');
+
+  const fclNetwork = network === 'emulator' ? 'local' : network;
 
   fcl
     .config()
     .put('accessNode.api', accessNode)
     .put('discovery.wallet', discoveryWallet)
-    .put('flow.network', network);
+    .put('flow.network', fclNetwork);
 
   configured = true;
 }

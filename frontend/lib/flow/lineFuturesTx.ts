@@ -55,8 +55,8 @@ transaction(
     predictionCommitmentId: String,
     amount: UFix64
 ) {
-    prepare(signer: AuthAccount) {
-        let vaultRef = signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)
+    prepare(signer: auth(Storage) &Account) {
+        let vaultRef = signer.storage.borrow<auth(FungibleToken.Withdraw) &FlowToken.Vault>(from: /storage/flowTokenVault)
             ?? panic("No FlowToken vault")
         if vaultRef.balance < amount {
             panic("Insufficient FLOW balance")
@@ -86,8 +86,8 @@ transaction(
     predictionCommitmentIds: [String],
     amount: UFix64
 ) {
-    prepare(signer: AuthAccount) {
-        let vaultRef = signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)
+    prepare(signer: auth(Storage) &Account) {
+        let vaultRef = signer.storage.borrow<auth(FungibleToken.Withdraw) &FlowToken.Vault>(from: /storage/flowTokenVault)
             ?? panic("No FlowToken vault")
         if vaultRef.balance < amount {
             panic("Insufficient FLOW balance")

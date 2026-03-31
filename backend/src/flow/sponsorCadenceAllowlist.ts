@@ -11,9 +11,24 @@ function coreImportsForNetwork(
   fungibleOverride?: string | null,
   flowTokenOverride?: string | null,
 ): { fungible: string; flowToken: string } {
+  if (fungibleOverride && flowTokenOverride) {
+    return {
+      fungible: cadenceImportAddress(fungibleOverride),
+      flowToken: cadenceImportAddress(flowTokenOverride),
+    };
+  }
   const isMain = network === 'mainnet';
-  const defaultFungible = isMain ? '0xf233dcee88fe0abe' : '0x9a0766d93b6608b7';
-  const defaultFlow = isMain ? '0x1654653399040a61' : '0x7e60df042a9c0868';
+  const isLocal = network === 'local';
+  const defaultFungible = isMain
+    ? '0xf233dcee88fe0abe'
+    : isLocal
+      ? '0xee82856bf20e2aa6'
+      : '0x9a0766d93b6608b7';
+  const defaultFlow = isMain
+    ? '0x1654653399040a61'
+    : isLocal
+      ? '0x0ae53cb6e3f42a79'
+      : '0x7e60df042a9c0868';
   return {
     fungible: cadenceImportAddress(fungibleOverride || defaultFungible),
     flowToken: cadenceImportAddress(flowTokenOverride || defaultFlow),
@@ -31,8 +46,8 @@ transaction(
     predictionCommitmentId: String,
     amount: UFix64
 ) {
-    prepare(signer: AuthAccount) {
-        let vaultRef = signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)
+    prepare(signer: auth(Storage) &Account) {
+        let vaultRef = signer.storage.borrow<auth(FungibleToken.Withdraw) &FlowToken.Vault>(from: /storage/flowTokenVault)
             ?? panic("No FlowToken vault")
         if vaultRef.balance < amount {
             panic("Insufficient FLOW balance")
@@ -60,8 +75,8 @@ transaction(
     predictionCommitmentIds: [String],
     amount: UFix64
 ) {
-    prepare(signer: AuthAccount) {
-        let vaultRef = signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)
+    prepare(signer: auth(Storage) &Account) {
+        let vaultRef = signer.storage.borrow<auth(FungibleToken.Withdraw) &FlowToken.Vault>(from: /storage/flowTokenVault)
             ?? panic("No FlowToken vault")
         if vaultRef.balance < amount {
             panic("Insufficient FLOW balance")

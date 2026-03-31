@@ -59,7 +59,7 @@ access(all) contract PriceOracle {
         return UInt64(self.windowStarts.length)
     }
 
-    access(all) view fun getWindowsInRange(start: UInt64, end: UInt64): [UInt64] {
+    access(all) fun getWindowsInRange(start: UInt64, end: UInt64): [UInt64] {
         var out: [UInt64] = []
         for w in self.windowStarts {
             if w >= start && w <= end {

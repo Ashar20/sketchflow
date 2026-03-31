@@ -56,3 +56,7 @@ tsconfig.tsbuildinfo
 coverage
 
 backend/.pnpm-store/
+
+# Flow emulator local state
+flowdb/
+.flow-fork-cache/

@@ -104,14 +104,14 @@ Source: `cadence/contracts/`.
 - **Treasury** holds deposited FLOW; **open** moves vault → treasury; **close** withdraws payout to user’s **`/public/flowTokenReceiver`**.
 - **Positions** — struct fields align with the old Solidity model: user `Address`, amount `UFix64`, leverage, timestamps `UFix64`, commitment strings, `Fix64` pnl when closed.
 - **Roles (resources)**  
-  - **`PnlOperator`** — only path used by backend to call internal close logic (stored at `/storage/drawfiPnlOperator` on the operator account).  
+  - **`PnlOperator`** — only path used by backend to call internal close logic (stored at `/storage/sketchflowPnlOperator` on the operator account).  
   - **`OwnerAdmin`** — pause, fees, emergency withdraw (stored separately; deploy/setup).  
 - **Batch open** — 1–5 commitments, staggered `openTimestamp` by 60s; remainder FLOW refunded to user.
 - **Fees** — 2% of **positive** pnl (200 bps), same product rule as before.
 
 ### PriceOracle
 
-- **`Admin` resource** — `storeCommitment(windowStart, commitment)`; only the account that holds the resource can write (setup transaction saves it under e.g. `/storage/drawfiPriceOracleAdmin`).
+- **`Admin` resource** — `storeCommitment(windowStart, commitment)`; only the account that holds the resource can write (setup transaction saves it under e.g. `/storage/sketchflowPriceOracleAdmin`).
 - **Views** — `getCommitment`, `getLatestWindow`, `getWindowsInRange`, `getWindowCount`.
 
 ### Why resources instead of `msg.sender`
@@ -166,9 +166,9 @@ With **`BLOCKCHAIN_ADAPTER=flow`**, position **opens** are intended to be **sign
 2. **Create / fund** a testnet account with FLOW.
 3. **Deploy** `PriceOracle` and `LineFutures` from `flow.json` (update account + keys).
 4. **Setup transactions** (run once per deployment):
-   - `PriceOracle.createAdmin()` → save `@PriceOracle.Admin` to `/storage/drawfiPriceOracleAdmin`.
-   - `LineFutures.createPnlOperator()` → save to `/storage/drawfiPnlOperator`.
-   - `LineFutures.createOwnerAdmin()` → save to a chosen path for ops (pause/fees).
+   - `PriceOracle.createAdmin()` → save `@PriceOracle.Admin` to `/storage/sketchflowPriceOracleAdmin`.
+   - `LineFutures.createPnlOperator()` → save to `/storage/sketchflowPnlOperator`.
+   - `LineFutures.createOwnerAdmin()` → save to `/storage/sketchflowOwnerAdmin` (or another path you choose for ops).
 5. Fund the **operator** account with enough **FLOW** for transaction fees on **`PnlOperator.closePosition`** (and any oracle txs). Users who open positions need their own **FlowToken vault** + **`/public/flowTokenReceiver`** so payouts succeed.
 6. Set backend env: `BLOCKCHAIN_ADAPTER=flow`, `FUTURES_CONTRACT_ADDRESS=<LineFutures deploy address>`, `FLOW_ACCOUNT_ADDRESS`, `FLOW_PRIVATE_KEY`, etc.
 

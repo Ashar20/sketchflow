@@ -381,6 +381,8 @@ At position close time:
 
 The predict page signs **Cadence transactions** with the user’s Flow wallet (`@onflow/fcl` `mutate`). Collateral is **FLOW**: the tx withdraws from `/storage/flowTokenVault` and calls `LineFutures.openPosition` or `batchOpenPositions` (see `cadence/transactions/`). Set `NEXT_PUBLIC_FLOW_LINE_FUTURES_ADDRESS` to your deployed contract account. Users pay Flow network fees from their wallet like any other Flow app.
 
+**Deploy + operator setup:** see **`cadence/DEPLOY.md`** (`flow.json`, `flow deploy`, `scripts/sync-flow-cadence-address.mjs`, and storage paths `/storage/sketchflowPnlOperator`, etc.). **Local emulator:** `backend/env.emulator.example` + `frontend/env.emulator.example` (or generated `.env.local` files) target `0xf8d6e0586b0a20c7` after `flow emulator --contracts` and `flow deploy -n emulator`.
+
 ### Optional: sponsored transaction fees (Flow payer)
 
 You can run a **separate Flow account** that only pays transaction fees while the user remains **proposer** and **authorizer** (they still sign and supply stake from their vault). Enable on the API with `FLOW_SPONSOR_ENABLED=true`, `FLOW_SPONSOR_ADDRESS`, and `FLOW_SPONSOR_PRIVATE_KEY` (fund that account with a small FLOW balance for fees). The server exposes `GET /api/flow/fee-sponsorship` and `POST /api/flow/sponsor-sign`; the predict page calls them automatically when sponsorship is available. The server **SHA-256 allowlists** only the LineFutures **open** and **batch open** cadence templates built from `FLOW_LINE_FUTURES_ADDRESS` and `NETWORK` (and optional `FLOW_FUNGIBLE_TOKEN_ADDRESS` / `FLOW_TOKEN_ADDRESS` if you override token addresses—keep them in sync with the frontend). Optional `FLOW_SPONSOR_API_KEY` + `NEXT_PUBLIC_FLOW_SPONSOR_API_KEY` adds a simple shared secret on the sponsor-sign route.
@@ -425,7 +427,7 @@ You can run a **separate Flow account** that only pays transaction fees while th
 
 ```
 1. PriceIngester connects to Bybit WebSocket (wss://stream.bybit.com)
-   → Subscribes to tickers.BTCUSDT
+   → Subscribes to tickers (e.g. FLOWUSDT)
    → Receives ~10 price updates per second
 2. PriceAggregator accumulates prices per second
    → At minute boundary: produces 60-price window
@@ -457,7 +459,7 @@ Copy `backend/.env.example` to `backend/.env` and fill in values. (The server lo
 
 ```
 ETHEREUM_PRIVATE_KEY=
-FUTURES_CONTRACT_ADDRESS=   # LineFutures address
+FUTURES_CONTRACT_ADDRESS=   # Flow: 16-hex LineFutures account (same as NEXT_PUBLIC_FLOW_LINE_FUTURES_ADDRESS)
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/
 MONGODB_DATABASE=sketchflow
 ADMIN_API_KEY=
@@ -473,7 +475,9 @@ NEXT_PUBLIC_FLOW_NETWORK=testnet       # or mainnet
 NEXT_PUBLIC_BACKEND_URL=http://localhost:3001
 ```
 
-**Contracts** — copy `contracts/.env.example` to `contracts/.env` when running Hardhat deploy scripts (needs `ETHEREUM_PRIVATE_KEY` and optionally `ETHEREUM_RPC_URL`).
+**Flow Cadence** — deploy with Flow CLI per **`cadence/DEPLOY.md`** (not Hardhat).
+
+**EVM (optional)** — copy `contracts/.env.example` to `contracts/.env` only if you use `BLOCKCHAIN_ADAPTER=evm` / Hardhat.
 
 ### Run
 
@@ -481,15 +485,10 @@ NEXT_PUBLIC_BACKEND_URL=http://localhost:3001
 2. Backend: `cd backend && npm run dev` (port 3001), or `npm run start` after `npm run build`
 3. Frontend: `cd frontend && npm run dev`
 
-### Deploy Contracts
+### Deploy contracts
 
-```bash
-cd contracts
-pnpm install
-npx hardhat ignition deploy ignition/modules/LineFutures.ts --network sepolia
-```
-
-See `contracts/DEPLOY.md` and `contracts/DEPLOYMENT.md` for details.
+- **Flow (default):** follow **`cadence/DEPLOY.md`** — `flow.json`, `flow deploy`, then `LINE_FUTURES_ADDRESS=0x… node scripts/sync-flow-cadence-address.mjs`, run setup transactions, set `FUTURES_CONTRACT_ADDRESS` / `FLOW_LINE_FUTURES_ADDRESS` and `NEXT_PUBLIC_FLOW_LINE_FUTURES_ADDRESS`.
+- **EVM (legacy):** `contracts/DEPLOY.md` and `contracts/DEPLOYMENT.md` (Hardhat / Ignition).
 
 ## License
 

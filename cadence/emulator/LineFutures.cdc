@@ -1,7 +1,7 @@
-import FungibleToken from 0x9a0766d93b6608b7
-import FlowToken from 0x7e60df042a9c0868
+import FungibleToken from 0xee82856bf20e2aa6
+import FlowToken from 0x0ae53cb6e3f42a79
 
-/// Sketch Flow — LineFutures on Flow: FLOW collateral, DA commitments, settlement authorized via PnlOperator resource.
+/// Emulator build — same as `cadence/contracts/LineFutures.cdc` with core-contract addresses for local emulator.
 access(all) contract LineFutures {
 
     access(all) let MIN_AMOUNT: UFix64

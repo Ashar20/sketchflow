@@ -1,21 +1,35 @@
 {
-  "contracts": {
-    "PriceOracle": "cadence/contracts/PriceOracle.cdc",
-    "LineFutures": "cadence/contracts/LineFutures.cdc"
-  },
-  "networks": {
-    "testnet": "access.devnet.nodes.onflow.org:9000",
-    "mainnet": "access.mainnet.nodes.onflow.org:9000"
-  },
-  "accounts": {
-    "sketchflow-testnet": {
-      "address": "REPLACE_WITH_FLOW_ADDRESS",
-      "key": "REPLACE_WITH_KEY_NAME"
-    }
-  },
-  "deployments": {
-    "testnet": {
-      "sketchflow-testnet": ["PriceOracle", "LineFutures"]
-    }
-  }
+	"contracts": {
+		"PriceOracle": {
+			"source": "cadence/contracts/PriceOracle.cdc",
+			"aliases": {
+				"emulator": "f8d6e0586b0a20c7"
+			}
+		},
+		"LineFutures": {
+			"source": "cadence/emulator/LineFutures.cdc",
+			"aliases": {
+				"emulator": "f8d6e0586b0a20c7"
+			}
+		}
+	},
+	"networks": {
+		"emulator": "127.0.0.1:3569",
+		"testnet": "access.devnet.nodes.onflow.org:9000",
+		"mainnet": "access.mainnet.nodes.onflow.org:9000"
+	},
+	"accounts": {
+		"emulator-account": {
+			"address": "f8d6e0586b0a20c7",
+			"key": {
+				"type": "file",
+				"location": "emulator-account.pkey"
+			}
+		}
+	},
+	"deployments": {
+		"emulator": {
+			"emulator-account": ["PriceOracle", "LineFutures"]
+		}
+	}
 }

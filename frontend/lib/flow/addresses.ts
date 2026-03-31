@@ -1,8 +1,10 @@
-export type FlowNetworkId = 'testnet' | 'mainnet';
+export type FlowNetworkId = 'testnet' | 'mainnet' | 'emulator';
 
 export function resolveFlowNetwork(): FlowNetworkId {
   const n = (process.env.NEXT_PUBLIC_FLOW_NETWORK || 'testnet').toLowerCase();
-  return n === 'mainnet' ? 'mainnet' : 'testnet';
+  if (n === 'mainnet') return 'mainnet';
+  if (n === 'emulator' || n === 'local') return 'emulator';
+  return 'testnet';
 }
 
 /** Canonical core contract addresses for FungibleToken + FlowToken. */
@@ -14,6 +16,12 @@ export function flowCoreImports(network: FlowNetworkId): {
     return {
       fungibleToken: '0xf233dcee88fe0abe',
       flowToken: '0x1654653399040a61',
+    };
+  }
+  if (network === 'emulator') {
+    return {
+      fungibleToken: '0xee82856bf20e2aa6',
+      flowToken: '0x0ae53cb6e3f42a79',
     };
   }
   return {
