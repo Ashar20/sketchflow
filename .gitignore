@@ -60,3 +60,6 @@ backend/.pnpm-store/
 # Flow emulator local state
 flowdb/
 .flow-fork-cache/
+
+# Flow testnet/mainnet deployer key (never commit)
+testnet-account.pkey

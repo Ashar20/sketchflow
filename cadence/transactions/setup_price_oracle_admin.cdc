@@ -1,5 +1,5 @@
 // Import address: account where PriceOracle is deployed (same as LineFutures when co-deployed).
-import PriceOracle from 0x0000000000000001
+import PriceOracle from 0x168a31e4dc7d31f1
 
 transaction() {
     prepare(signer: auth(Storage) &Account) {

@@ -4,20 +4,22 @@ This stack uses **Cadence** `PriceOracle` and `LineFutures`. Operator resources 
 
 Contracts and transactions target **Cadence 1.x** / **Flow CLI v2** (`flow deploy`, `flow transactions send`). User txs use `prepare(signer: auth(Storage) &Account)` and `signer.storage.borrow` / `save`.
 
+Root **`flow.json`** is configured for **testnet** deploy account **`0x168a31e4dc7d31f1`** (see **`testnet-deployer`**). Save your funded account’s private key as **`testnet-account.pkey`** in the repo root (same format as **`emulator-account.pkey`**; gitignored). Emulator uses a **separate** config file.
+
 ## Local emulator (no testnet keys)
 
-From the **repo root** (uses root **`flow.json`**, **`emulator-account.pkey`**, and **`cadence/emulator/LineFutures.cdc`** for emulator core-token imports):
+From the **repo root** (uses **`flow.emulator.json`**, **`emulator-account.pkey`**, and **`cadence/emulator/LineFutures.cdc`**):
 
 ```bash
 # Terminal A — core contracts + REST on :8888
-flow emulator --contracts -f flow.json
+flow emulator --contracts -f flow.emulator.json
 
 # Terminal B
 LINE_FUTURES_ADDRESS=0xf8d6e0586b0a20c7 node scripts/sync-flow-cadence-address.mjs
-flow deploy -n emulator -f flow.json -y
-flow transactions send cadence/transactions/setup_price_oracle_admin.cdc --signer emulator-account -n emulator -f flow.json -y
-flow transactions send cadence/transactions/setup_pnl_operator.cdc --signer emulator-account -n emulator -f flow.json -y
-flow transactions send cadence/transactions/setup_owner_admin.cdc --signer emulator-account -n emulator -f flow.json -y
+flow deploy -n emulator -f flow.emulator.json -y
+flow transactions send cadence/transactions/setup_price_oracle_admin.cdc --signer emulator-account -n emulator -f flow.emulator.json -y
+flow transactions send cadence/transactions/setup_pnl_operator.cdc --signer emulator-account -n emulator -f flow.emulator.json -y
+flow transactions send cadence/transactions/setup_owner_admin.cdc --signer emulator-account -n emulator -f flow.emulator.json -y
 ```
 
 Then copy **`backend/env.emulator.example`** → `backend/.env.local` and **`frontend/env.emulator.example`** → `frontend/.env.local` (adjust MongoDB / admin key). **`FLOW_KEY_HASH_ALGO=SHA3_256`** matches the default emulator service account.
@@ -35,15 +37,17 @@ LINE_FUTURES_ADDRESS=0x0000000000000001 node scripts/sync-flow-cadence-address.m
 - [Flow CLI](https://developers.flow.com/tools/flow-cli/install) installed.
 - A **funded** Flow testnet (or mainnet) account for deployment and, usually, the backend signer account that will hold **`PnlOperator`**.
 
-## 1. Configure `flow.json` for testnet
+## 1. Testnet deploy (`flow.json`)
 
-Add an account stanza with your address and key (see Flow CLI **flow.json** docs). Deploy **`cadence/contracts/PriceOracle.cdc`** and **`cadence/contracts/LineFutures.cdc`** (testnet `FlowToken` / `FungibleToken` imports)—not the **`cadence/emulator/`** copy.
-
-Deploy:
+1. Create **`testnet-account.pkey`** in the repo root with your account private key (hex; `0x` prefix is OK if that’s what `flow keys generate` printed).
+2. Ensure the account **`0x168a31e4dc7d31f1`** has enough **FLOW** for deploy + setup txs.
+3. Deploy **`cadence/contracts/PriceOracle.cdc`** and **`cadence/contracts/LineFutures.cdc`** (testnet core token imports)—not **`cadence/emulator/`**.
 
 ```bash
-flow deploy --network testnet -f flow.json -y
+flow deploy -n testnet -f flow.json -y
 ```
+
+Deployments use the **`testnet-deployer`** account from **`flow.json`**.
 
 ## 2. Sync import addresses in transactions
 

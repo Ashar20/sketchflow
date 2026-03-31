@@ -3,13 +3,13 @@
 		"PriceOracle": {
 			"source": "cadence/contracts/PriceOracle.cdc",
 			"aliases": {
-				"testnet": "168a31e4dc7d31f1"
+				"emulator": "f8d6e0586b0a20c7"
 			}
 		},
 		"LineFutures": {
-			"source": "cadence/contracts/LineFutures.cdc",
+			"source": "cadence/emulator/LineFutures.cdc",
 			"aliases": {
-				"testnet": "168a31e4dc7d31f1"
+				"emulator": "f8d6e0586b0a20c7"
 			}
 		}
 	},
@@ -19,17 +19,17 @@
 		"mainnet": "access.mainnet.nodes.onflow.org:9000"
 	},
 	"accounts": {
-		"testnet-deployer": {
-			"address": "168a31e4dc7d31f1",
+		"emulator-account": {
+			"address": "f8d6e0586b0a20c7",
 			"key": {
 				"type": "file",
-				"location": "testnet-account.pkey"
+				"location": "emulator-account.pkey"
 			}
 		}
 	},
 	"deployments": {
-		"testnet": {
-			"testnet-deployer": ["PriceOracle", "LineFutures"]
+		"emulator": {
+			"emulator-account": ["PriceOracle", "LineFutures"]
 		}
 	}
 }

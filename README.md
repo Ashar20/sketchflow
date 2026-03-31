@@ -381,7 +381,7 @@ At position close time:
 
 The predict page signs **Cadence transactions** with the user’s Flow wallet (`@onflow/fcl` `mutate`). Collateral is **FLOW**: the tx withdraws from `/storage/flowTokenVault` and calls `LineFutures.openPosition` or `batchOpenPositions` (see `cadence/transactions/`). Set `NEXT_PUBLIC_FLOW_LINE_FUTURES_ADDRESS` to your deployed contract account. Users pay Flow network fees from their wallet like any other Flow app.
 
-**Deploy + operator setup:** see **`cadence/DEPLOY.md`** (`flow.json`, `flow deploy`, `scripts/sync-flow-cadence-address.mjs`, and storage paths `/storage/sketchflowPnlOperator`, etc.). **Local emulator:** `backend/env.emulator.example` + `frontend/env.emulator.example` (or generated `.env.local` files) target `0xf8d6e0586b0a20c7` after `flow emulator --contracts` and `flow deploy -n emulator`.
+**Deploy + operator setup:** see **`cadence/DEPLOY.md`** (`flow.json`, `flow deploy`, `scripts/sync-flow-cadence-address.mjs`, and storage paths `/storage/sketchflowPnlOperator`, etc.). **Testnet:** root `flow.json` targets **`0x168a31e4dc7d31f1`** — add `testnet-account.pkey`, run `flow deploy -n testnet -f flow.json`, then copy `backend/env.testnet.example` / `frontend/env.testnet.example` into `.env.local`. **Emulator:** use `flow.emulator.json` (see `cadence/DEPLOY.md`) and `env.emulator.example`.
 
 ### Optional: sponsored transaction fees (Flow payer)
 
