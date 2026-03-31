@@ -230,7 +230,7 @@ export default function PitchPage() {
               variants={itemVariants}
               custom={2}
             >
-              {['Built on Base', 'Wallet-native', 'EigenDA commitments', 'Up to 2500x Leverage'].map((tag) => (
+              {['Built on Flow', 'Wallet-native', 'MongoDB commitments', 'Up to 2500x Leverage'].map((tag) => (
                 <span
                   key={tag}
                   className="px-4 py-1.5 rounded-full bg-white/[0.04] border border-[#00E5FF]/20 text-xs font-mono text-[#00E5FF]/80"
@@ -327,7 +327,7 @@ export default function PitchPage() {
               {[
                 {
                   num: '01',
-                  title: 'Base brought fees to near-zero',
+                  title: 'Flow brought fees to near-zero',
                   detail: 'Micro-positions are finally viable on-chain',
                   icon: (
                     <svg className="w-8 h-8 text-[#00E5FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -427,7 +427,7 @@ export default function PitchPage() {
             {/* How it works visual flow */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
               {[
-                { step: '01', label: 'Draw a price curve', desc: 'On a live BTC chart canvas' },
+                { step: '01', label: 'Draw a price curve', desc: 'On a live FLOW chart canvas' },
                 { step: '02', label: 'Pick your stake', desc: 'As low as $0.10' },
                 { step: '03', label: '59 predictions scored', desc: 'Against real price data' },
                 { step: '04', label: 'Instant payout', desc: '>50% accuracy = profit' },
@@ -499,7 +499,7 @@ export default function PitchPage() {
               variants={itemVariants}
               custom={2}
             >
-              LineFutures on Base for collateral and PnL; predictions and price windows committed to EigenDA; automation closes expired positions server-side.
+              LineFutures on Flow for collateral and PnL; predictions and price windows committed to MongoDB; automation closes expired positions server-side.
             </motion.p>
 
             <div className="grid md:grid-cols-3 gap-6 mb-8">
@@ -507,7 +507,7 @@ export default function PitchPage() {
                 {
                   title: 'LineFutures',
                   addr: 'Deployed',
-                  desc: 'Positions, leverage, fees, and settlement events on Base',
+                  desc: 'Positions, leverage, fees, and settlement events on Flow',
                   accent: true,
                 },
                 {
@@ -558,7 +558,7 @@ export default function PitchPage() {
                 <p className="text-sm font-mono text-[#00E5FF]/70 mb-3">Sketch Flow</p>
                 <ul className="space-y-2 text-sm text-white/50">
                   <li className="flex items-start gap-2"><span className="text-[#00E5FF] mt-0.5">✓</span> Draw the path you expect</li>
-                  <li className="flex items-start gap-2"><span className="text-[#00E5FF] mt-0.5">✓</span> One wallet tx to open (native gas)</li>
+                  <li className="flex items-start gap-2"><span className="text-[#00E5FF] mt-0.5">✓</span> One tx to open (Flow native gas)</li>
                   <li className="flex items-start gap-2"><span className="text-[#00E5FF] mt-0.5">✓</span> Payout settles to your wallet on-chain</li>
                 </ul>
               </div>
@@ -601,11 +601,11 @@ export default function PitchPage() {
 
               <div className="space-y-5">
                 {[
-                  { step: '1', text: 'Open predict page — live BTC chart streaming' },
+                  { step: '1', text: 'Open predict page — live FLOW chart streaming' },
                   { step: '2', text: 'Draw a price curve on the canvas' },
                   { step: '3', text: 'Set stake, leverage, 1-min window' },
-                  { step: '4', text: 'Submit — wallet signs LineFutures.openPosition (ETH value)' },
-                  { step: '5', text: 'Position is live on Base' },
+                  { step: '4', text: 'Submit — backend signs LineFutures.openPosition (FLOW value)' },
+                  { step: '5', text: 'Position is live on Flow' },
                   { step: '6', text: 'Auto-settles, PnL from accuracy' },
                   { step: '7', text: 'Payout to your wallet when the minute closes' },
                 ].map((item, i) => (
@@ -684,9 +684,9 @@ export default function PitchPage() {
                 </div>
                 <ul className="space-y-4">
                   {[
-                    'Live on Base mainnet',
+                    'Live on Flow testnet',
                     'Wallet-native opens against LineFutures',
-                    '4 trading pairs (BTC, ETH, AAVE, DOGE)',
+                    '5 trading pairs (FLOW, BTC, ETH, AAVE, DOGE)',
                     'Auto position closer (every 10s)',
                     'Leaderboard: accuracy, PnL, win rate',
                   ].map((item) => (
