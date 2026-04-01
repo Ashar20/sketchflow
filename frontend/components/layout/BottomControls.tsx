@@ -132,7 +132,7 @@ export function BottomControls({
                       {!isOpeningPosition && positionStatus === 'awaiting_settlement' && 'Awaiting settlement...'}
                       {!isOpeningPosition && positionStatus === 'closed' && batchPnL !== null && (
                         <span className={batchPnL >= 0 ? 'text-emerald-300' : 'text-red-300'}>
-                          PnL: {batchPnL >= 0 ? '+' : ''}{batchPnL.toFixed(4)} ETH
+                          PnL: {batchPnL >= 0 ? '+' : ''}{batchPnL.toFixed(6)} FLOW
                         </span>
                       )}
                     </span>

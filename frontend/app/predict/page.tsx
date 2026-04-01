@@ -71,28 +71,29 @@ export default function PredictPage(_props: { params?: unknown; searchParams?: u
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
   const [statusMessageIndex, setStatusMessageIndex] = useState(0);
   const [isOpeningPosition, setIsOpeningPosition] = useState(false);
-  const [walletBalanceFlow, setWalletBalanceFlow] = useState('0.0000');
+  const [walletBalanceFlow, setWalletBalanceFlow] = useState('0.000000');
   const [walletBalanceLoading, setWalletBalanceLoading] = useState(false);
 
+  // Fetch balance on connect / position changes, and auto-refresh every 15s
   useEffect(() => {
     if (!isConnected || !address || typeof window === 'undefined') {
-      setWalletBalanceFlow('0.0000');
+      setWalletBalanceFlow('0.000000');
       return;
     }
+
     let cancelled = false;
+    const refresh = () => {
+      fetchFlowBalanceDisplay(address)
+        .then((b) => { if (!cancelled) { setWalletBalanceFlow(b); setWalletBalanceLoading(false); } })
+        .catch(() => { if (!cancelled) setWalletBalanceLoading(false); });
+    };
+
     setWalletBalanceLoading(true);
-    fetchFlowBalanceDisplay(address)
-      .then((b) => {
-        if (!cancelled) {
-          setWalletBalanceFlow(b);
-          setWalletBalanceLoading(false);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) setWalletBalanceLoading(false);
-      });
+    refresh();
+    const interval = setInterval(refresh, 15000);
     return () => {
       cancelled = true;
+      clearInterval(interval);
     };
   }, [isConnected, address, positionStatus, positionIds]);
 

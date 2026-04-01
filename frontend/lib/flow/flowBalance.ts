@@ -35,6 +35,10 @@ export async function fetchFlowBalanceDisplay(addr: string): Promise<string> {
     ],
   });
   const n = parseFloat(String(bal));
-  if (!Number.isFinite(n)) return '0.0000';
-  return n.toFixed(4);
+  if (!Number.isFinite(n)) return '0.000000';
+  // Use enough decimals so small earnings are visible
+  if (n === 0) return '0.000000';
+  if (n >= 1) return n.toFixed(4);
+  if (n >= 0.0001) return n.toFixed(6);
+  return n.toFixed(8);
 }
